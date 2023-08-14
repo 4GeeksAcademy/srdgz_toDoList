@@ -1,12 +1,43 @@
+body {
+    margin-top: 120px;
+    background: rgb(120, 180, 120);
+    font-family: system-ui, -apple-system;
+}
 
-/* 
+input {
+    border: 1px solid aliceblue;
+    border-radius: 5px;
+    width: 100%;
+    background: rgb(120, 180, 120);
+    padding: 5px;
+    color: aliceblue;
+}
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+::placeholder {
+    color: aliceblue;
+}
 
-*/
+ul {
+    padding: 0;
+    margin-bottom: 0;
+}
+
+ul li {
+    list-style: none;
+    color: aliceblue;
+    margin: 10px 0 10px;
+}
+
+h6 {
+    color: aliceblue;
+    text-align: end;
+}
+
+.title {
+    text-align: center;
+    color: aliceblue;
+}
+
+.fa-circle-xmark {
+    padding-left: 10px;
+}
