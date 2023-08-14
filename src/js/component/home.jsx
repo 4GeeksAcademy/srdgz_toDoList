@@ -12,10 +12,11 @@ const Home = () => {
 			<ul>
 				<li>
 					<input
+						className="form-control"
 						type='text'
 						placeholder='Enter your task'
-						onChange={(task) => setInputValue(task.target.value)}
 						value={inputValue}
+						onChange={(task) => setInputValue(task.target.value)}
 						onKeyUp={(task) => {
 							if (task.key === 'Enter') {
 								setToDos(toDos.concat(inputValue));

@@ -1,20 +1,7 @@
 body {
     margin-top: 120px;
-    background: rgb(120, 180, 120);
+    background: #E7e7f0;
     font-family: system-ui, -apple-system;
-}
-
-input {
-    border: 1px solid aliceblue;
-    border-radius: 5px;
-    width: 100%;
-    background: rgb(120, 180, 120);
-    padding: 5px;
-    color: aliceblue;
-}
-
-::placeholder {
-    color: aliceblue;
 }
 
 ul {
@@ -24,20 +11,41 @@ ul {
 
 ul li {
     list-style: none;
-    color: aliceblue;
+    color:#3e3e3f;
     margin: 10px 0 10px;
 }
 
 h6 {
-    color: aliceblue;
+    color: #3e3e3f;
     text-align: end;
+}
+
+.container {
+    background: whitesmoke;
+    border-radius: 20px;
+    padding: 20px;
 }
 
 .title {
     text-align: center;
-    color: aliceblue;
+    color: #3e3e3f;
+}
+
+.form-control {
+    border: 1px solid blue;
+    border-radius: 5px;
+    width: 100%;
+    background:whitesmoke;
+    padding: 10px;
+    color: blue !important;
+}
+
+::placeholder {
+    color: blue !important;
 }
 
 .fa-circle-xmark {
     padding-left: 10px;
+    color: blue;
 }
+
