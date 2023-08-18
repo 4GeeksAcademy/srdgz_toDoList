@@ -6,36 +6,40 @@ const Home = () => {
   const updatedTodoList = [...todos, inputValue];
   const URL = "https://playground.4geeks.com/apis/fake/todos/user/srdgz";
 
-  const getTask = () => {
-    fetch(`${URL}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          let data = response.json();
-          setTodos(data);
-        } else {
-          newUser();
-        }
-      })
-      .catch((error) => console.log("Something went wrong: \n", error));
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch(`${URL}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setTodos(data);
+      } else {
+        newUser();
+      }
+    } catch (error) {
+      console.log("Something went wrong:\n", error);
+    }
   };
 
-  const newUser = () => {
-    fetch(`${URL}`, {
-      method: "POST",
-      body: JSON.stringify([]),
-      headers: {
-        "Content-type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.ok) getTask();
-      })
-      .catch((error) => console.log("Something went wrong: \n", error));
+  const newUser = async () => {
+    try {
+      const response = await fetch(`${URL}`, {
+        method: "POST",
+        body: JSON.stringify([]),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      if (response.ok) {
+        await fetchTasks();
+      }
+    } catch (error) {
+      console.log("Something went wrong:\n", error);
+    }
   };
 
   const handleKey = (task) => {
@@ -44,74 +48,77 @@ const Home = () => {
     }
   };
 
-  const addTask = () => {
+  const addTask = async () => {
     if (todos.find((elem) => elem.label.trim() === inputValue.label.trim())) {
       alert("The field cannot be duplicated");
       return;
     }
-    fetch(`${URL}`, {
-      method: "PUT",
-      body: JSON.stringify(updatedTodoList),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(response.status + " " + response.statusText);
-        } else {
-          setTodos(updatedTodoList);
-          setInputValue({ label: "", done: false });
-        }
-      })
-      .catch((error) => console.log("Something went wrong: \n", error));
+    try {
+      const response = await fetch(`${URL}`, {
+        method: "PUT",
+        body: JSON.stringify(updatedTodoList),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        setTodos(updatedTodoList);
+        setInputValue({ label: "", done: false });
+      } else {
+        throw new Error(response.status + " " + response.statusText);
+      }
+    } catch (error) {
+      console.log("Something went wrong:\n", error);
+    }
   };
 
-  const handleDelete = (index) => {
-    const newList = todos.filter((i, currentIndex) => index != currentIndex);
-    fetch(`${URL}`, {
-      method: "PUT",
-      body: JSON.stringify(newList),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(response.status + " " + response.statusText);
-        } else {
-          getTask();
-        }
-      })
-      .catch((error) => console.log("Something went wrong: \n", error));
+  const handleDelete = async (index) => {
+    const newList = todos.filter((i, currentIndex) => index !== currentIndex);
+    try {
+      const response = await fetch(`${URL}`, {
+        method: "PUT",
+        body: JSON.stringify(newList),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        await fetchTasks();
+      } else {
+        throw new Error(response.status + " " + response.statusText);
+      }
+    } catch (error) {
+      console.log("Something went wrong:\n", error);
+    }
   };
 
-  const deleteAllUser = () => {
-    fetch(`${URL}`, {
-      method: "DELETE",
-      headers: {
-        "Content-type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(response.status + " " + response.statusText);
-        } else {
-          setTodos([]);
-          alert("All tasks were successfully deleted");
-        }
-      })
-      .catch((error) => console.log("Something went wrong: \n", error));
+  const deleteAllUser = async () => {
+    try {
+      const response = await fetch(`${URL}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      if (response.ok) {
+        setTodos([]);
+        alert("All tasks were successfully deleted");
+      } else {
+        throw new Error(response.status + " " + response.statusText);
+      }
+    } catch (error) {
+      console.log("Something went wrong:\n", error);
+    }
   };
 
   useEffect(() => {
-    getTask();
+    fetchTasks();
   }, []);
 
   return (
     <div className="container col-10">
       <h1 className="title">
-        <i class="fa-solid fa-list-check"></i> My todo list
+        <i className="fa-solid fa-list-check"></i> My todo list
       </h1>
       <ul>
         <li>
@@ -133,7 +140,7 @@ const Home = () => {
             {""}
             <i
               className="fa-regular fa-circle-xmark"
-              onClick={handleDelete(index)}
+              onClick={() => handleDelete(index)}
             ></i>
             <hr className="breakLine" />
           </li>
