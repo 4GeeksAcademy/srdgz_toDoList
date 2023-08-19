@@ -7,6 +7,13 @@ import "../styles/index.css";
 
 //import your own components
 import Home from "./component/home.jsx";
+import { Toaster } from "react-hot-toast";
 
 //render your react application
-ReactDOM.render(<Home />, document.querySelector("#app"));
+ReactDOM.render(
+  <>
+    <Home />
+    <Toaster position="bottom-center" />
+  </>,
+  document.querySelector("#app")
+);

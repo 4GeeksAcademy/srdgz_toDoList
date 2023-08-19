@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const Home = () => {
   const [inputValue, setInputValue] = useState({ label: "", done: false });
   const [todos, setTodos] = useState([]);
   const updatedTodoList = [...todos, inputValue];
-  const URL = "https://playground.4geeks.com/apis/fake/todos/user/srdgz";
+  const URL =
+    "https://todo-list-ea179-default-rtdb.europe-west1.firebasedatabase.app/srdgz.json";
 
   const fetchTasks = async () => {
     try {
@@ -16,7 +18,11 @@ const Home = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setTodos(data);
+        if (data == null) {
+          newUser();
+        } else {
+          setTodos(data);
+        }
       } else {
         newUser();
       }
@@ -34,9 +40,6 @@ const Home = () => {
           "Content-type": "application/json",
         },
       });
-      if (response.ok) {
-        await fetchTasks();
-      }
     } catch (error) {
       console.log("Something went wrong:\n", error);
     }
@@ -50,7 +53,7 @@ const Home = () => {
 
   const addTask = async () => {
     if (todos.find((elem) => elem.label.trim() === inputValue.label.trim())) {
-      alert("The field cannot be duplicated");
+      toast.error("The field cannot be duplicated");
       return;
     }
     try {
@@ -73,7 +76,7 @@ const Home = () => {
   };
 
   const handleDelete = async (index) => {
-    const newList = todos.filter((i, currentIndex) => index !== currentIndex);
+    const newList = todos.filter((_, currentIndex) => index !== currentIndex);
     try {
       const response = await fetch(`${URL}`, {
         method: "PUT",
@@ -102,7 +105,7 @@ const Home = () => {
       });
       if (response.ok) {
         setTodos([]);
-        alert("All tasks were successfully deleted");
+        toast.success("All tasks were successfully deleted");
       } else {
         throw new Error(response.status + " " + response.statusText);
       }
